@@ -1,6 +1,6 @@
 'use client';
 
-import { authenticate } from '@/actions/auth/login';
+import { authenticate } from '@/app/auth/_actions/login';
 import { useSearchParams } from 'next/navigation';
 import { useActionState } from 'react';
 
