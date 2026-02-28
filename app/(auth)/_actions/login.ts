@@ -18,11 +18,9 @@ export async function authenticate(
   if (!validatedFields.success) {
     const flattenedErrors = z.flattenError(validatedFields.error);
 
-    console.log('Validation errors:', flattenedErrors.fieldErrors);
-
     return {
       success: false,
-      message: 'Validation error',
+      message: 'Validation error.',
       errors: flattenedErrors.fieldErrors,
       data: fields,
     } satisfies FormState;

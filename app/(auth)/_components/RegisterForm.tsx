@@ -1,18 +1,21 @@
 'use client';
 
 import { useActionState } from 'react';
-import { useSearchParams } from 'next/navigation';
+import Link from 'next/link';
+import { redirect, useSearchParams } from 'next/navigation';
 
-import { authenticate } from '../_actions/login';
+import { registerUserAction } from '../_actions/register';
 import { FormError } from './FormError';
 
-export const LoginForm = () => {
+export const RegisterForm = () => {
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get('callbackUrl') || '/profile';
   const [formState, formAction, isPending] = useActionState(
-    authenticate,
+    registerUserAction,
     undefined,
   );
+
+  if (formState?.success) redirect('/login');
 
   return (
     <>
@@ -21,6 +24,18 @@ export const LoginForm = () => {
         action={formAction}
         className='fieldset bg-base-200 border-base-300 rounded-box border p-4'
       >
+        <div>
+          <label className='label'>Username</label>
+          <input
+            name='username'
+            type='text'
+            className='input w-full'
+            placeholder='nickname'
+            defaultValue={formState?.data?.username}
+          />
+          <FormError error={formState?.errors?.username} />
+        </div>
+
         <div>
           <label className='label'>Email</label>
           <input
@@ -47,9 +62,16 @@ export const LoginForm = () => {
 
         <input type='hidden' name='redirectTo' value={callbackUrl} />
         <button className='btn btn-neutral mt-4' disabled={isPending}>
-          Login
+          Register
         </button>
       </form>
+
+      <span>
+        Already have an account?{' '}
+        <Link href='/login' className='link'>
+          Login
+        </Link>
+      </span>
 
       {formState?.message && (
         <div role='alert' className='alert alert-error'>
