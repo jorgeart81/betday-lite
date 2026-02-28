@@ -5,23 +5,24 @@ import { auth } from '@/config/auth';
 import { env } from 'process';
 
 export const metadata: Metadata = {
-  title: `${env.APP_NAME} | auth`,
+  title: `${env.APP_NAME} | profile`,
 };
 
-export default async function AuthLayout({
+export default async function ProfileLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   const session = await auth();
 
-  if (session?.user) {
-    redirect('/profile');
+  if (!session?.user) {
+    redirect('/auth');
   }
 
   return (
     <main className='flex justify-center'>
-      <div className='w-full sm:max-w-md px-10'>{children}</div>
+      <pre>{JSON.stringify(session.user, undefined, 2)}</pre>
+      {children}
     </main>
   );
 }

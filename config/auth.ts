@@ -23,7 +23,7 @@ export const { auth, signIn, signOut, handlers } = NextAuth({
         if (!user) return null;
 
         const { password: hashPassword, ...rest } = user;
-        const isPasswordValid = !bcryptjs.compareSync(password, hashPassword);
+        const isPasswordValid = bcryptjs.compareSync(password, hashPassword);
         if (!isPasswordValid) return null;
 
         return rest;
