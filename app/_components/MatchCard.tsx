@@ -29,30 +29,36 @@ export const MatchCard = ({
 
         <div className='w-full text-xl flex items-center justify-evenly p-4'>
           <div className='flex flex-col gap-2'>
-            <span className='badge badge-ghost text-2xl font-semibold size-20 rounded-full'>
+            <span className='badge badge-ghost text-xl font-semibold size-20 rounded-full'>
               {homeTeam.shortName}
             </span>
             <b>{homeTeam.name}</b>
           </div>
 
-          <span className='badge badge-ghost text-lg'>vs</span>
+          <div className='flex flex-col items-center gap-2'>
+            <span className='badge badge-ghost text-lg'>vs</span>
+            <span>{market.type}</span>
+          </div>
 
           <div className='flex flex-col gap-2'>
-            <span className='badge badge-ghost text-2xl font-semibold size-20 rounded-full'>
+            <span className='badge badge-ghost text-xl font-semibold size-20 rounded-full'>
               {awayTeam.shortName}
             </span>
             <b>{awayTeam.name}</b>
           </div>
         </div>
         <div className='w-full flex card-actions'>
-          <button className='flex-1 btn hover:bg-green-500 hover:text-white'>
-            1 {market.odds.home}
+          <button className='flex-1 flex flex-col btn hover:bg-green-500 hover:text-white p-8'>
+            <span>Home (1)</span>{' '}
+            <span className='text-lg'>{market.odds.home}</span>
           </button>
-          <button className='flex-1 btn hover:bg-green-500 hover:text-white'>
-            X {market.odds.draw}
+          <button className='flex-1 flex flex-col btn hover:bg-green-500 hover:text-white p-8'>
+            <span>Draw (X)</span>{' '}
+            <span className='text-lg'>{market.odds.draw}</span>
           </button>
-          <button className='flex-1 btn hover:bg-green-500 hover:text-white'>
-            2 {market.odds.away}
+          <button className='flex-1 flex flex-col btn hover:bg-green-500 hover:text-white p-8'>
+            <span>Away (2)</span>{' '}
+            <span className='text-lg'>{market.odds.away}</span>
           </button>
         </div>
       </div>
