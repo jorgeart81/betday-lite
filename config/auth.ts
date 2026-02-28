@@ -3,8 +3,10 @@ import Credentials from 'next-auth/providers/credentials';
 import { authConfig } from './auth.config';
 
 import { z } from 'zod';
+import { UserDatasource } from '@/data/datasources/userDatasoruce';
+import bcryptjs from 'bcryptjs';
 
-export const { auth, signIn, signOut } = NextAuth({
+export const { auth, signIn, signOut, handlers } = NextAuth({
   ...authConfig,
   providers: [
     Credentials({
@@ -17,7 +19,14 @@ export const { auth, signIn, signOut } = NextAuth({
 
         const { email, password } = parsedCredentials.data;
 
-        return null;
+        const user = await UserDatasource.findByEmail(email);
+        if (!user) return null;
+
+        const { password: hashPassword, ...rest } = user;
+        const isPasswordValid = !bcryptjs.compareSync(password, hashPassword);
+        if (!isPasswordValid) return null;
+
+        return rest;
       },
     }),
   ],
