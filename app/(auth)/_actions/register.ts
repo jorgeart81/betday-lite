@@ -3,7 +3,7 @@
 import z from 'zod';
 
 import { signIn } from '@/config/auth';
-import { UserDatasource } from '@/data/datasources/userDatasoruce';
+import { UserDatasource } from '@/data/datasources/userDatasource';
 import { FormState } from './common/formState';
 import { SignupFormSchema, type SignupFormValues } from './common/validations';
 

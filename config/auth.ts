@@ -3,7 +3,7 @@ import Credentials from 'next-auth/providers/credentials';
 import { authConfig } from './auth.config';
 
 import { z } from 'zod';
-import { UserDatasource } from '@/data/datasources/userDatasoruce';
+import { UserDatasource } from '@/data/datasources/userDatasource';
 import bcryptjs from 'bcryptjs';
 
 export const { auth, signIn, signOut, handlers } = NextAuth({
