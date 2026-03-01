@@ -17,6 +17,16 @@ export const authConfig: NextAuthConfig = {
       }
       return true;
     },
+    jwt({ token, user }) {
+      if (user) {
+        token.data = user;
+      }
+      return token;
+    },
+    session({ token, session }) {
+      session.user = token.data as typeof session.user;
+      return session;
+    },
   },
   providers: [],
 };
