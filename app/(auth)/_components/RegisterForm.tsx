@@ -1,8 +1,8 @@
 'use client';
 
-import { useActionState } from 'react';
 import Link from 'next/link';
-import { redirect, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
+import { useActionState } from 'react';
 
 import { registerUserAction } from '../_actions/register';
 import { FormError } from './FormError';
@@ -15,7 +15,10 @@ export const RegisterForm = () => {
     undefined,
   );
 
-  if (formState?.success) redirect('/login');
+  if (formState?.success) {
+    window.location.replace('/profile');
+    return;
+  }
 
   return (
     <>

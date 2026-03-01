@@ -2,6 +2,7 @@
 
 import z from 'zod';
 
+import { signIn } from '@/config/auth';
 import { UserDatasource } from '@/data/datasources/userDatasoruce';
 import { FormState } from './common/formState';
 import { SignupFormSchema, type SignupFormValues } from './common/validations';
@@ -28,7 +29,7 @@ export async function registerUserAction(
   try {
     const user = await UserDatasource.create(
       fields.username,
-      fields.email,
+      fields.email.toLowerCase(),
       fields.password,
     );
     if (!user)
@@ -39,7 +40,16 @@ export async function registerUserAction(
         data: fields,
       };
 
-    return { success: true, message: undefined, data: undefined };
+    await signIn('credentials', {
+      email: user.email,
+      password: fields.password,
+      redirect: false,
+    });
+
+    return {
+      success: true,
+      message: undefined,
+    };
   } catch (error) {
     console.error(error);
 
