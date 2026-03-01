@@ -22,8 +22,10 @@ export default async function ProfileLayout({
 
   return (
     <>
-      <NavBar appName={env.APP_NAME ?? 'Dashboard'} />
-      <main className='flex bg-gray-50 p-4'>{children}</main>
+      <NavBar appName={env.APP_NAME ?? 'Dashboard'} className='h-16' />
+      <main className='container flex just h-[calc(100vh-4rem)] mx-auto'>
+        {children}
+      </main>
     </>
   );
 }
