@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
 
 import { env } from '@/config/env';
+import { NavBar } from './_components/NavBar';
 import { Provider } from './_components/provider/Provider';
 
 const geistSans = Geist({
@@ -30,7 +31,10 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Provider>{children}</Provider>
+        <Provider>
+          <NavBar appName={env.APP_NAME ?? 'Dashboard'} className='h-16' />
+          <div className='h-[calc(100vh-4rem)]'>{children}</div>
+        </Provider>
       </body>
     </html>
   );

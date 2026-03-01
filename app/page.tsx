@@ -25,8 +25,6 @@ export default async function Home() {
     {} as Record<number, Record<number, Array<Match>>>,
   );
 
-  console.log({ matchesMap });
-
   return (
     <main>
       <header className='flex flex-col items-center'>
