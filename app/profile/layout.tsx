@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation';
 
 import { auth } from '@/config/auth';
 import { env } from 'process';
+import { NavBar } from './_components/NavBar';
 
 export const metadata: Metadata = {
   title: `${env.APP_NAME} | profile`,
@@ -20,9 +21,9 @@ export default async function ProfileLayout({
   }
 
   return (
-    <main className='flex justify-center'>
-      <pre>{JSON.stringify(session.user, undefined, 2)}</pre>
-      {children}
-    </main>
+    <>
+      <NavBar appName={env.APP_NAME ?? 'Dashboard'} />
+      <main className='flex bg-gray-50 p-4'>{children}</main>
+    </>
   );
 }
