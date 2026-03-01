@@ -26,4 +26,32 @@ model User {
   password      String
   role          Role      @default(user)
   image         String?
+  
+  bets          Bet[]
+}
+
+enum Pick {
+  HOME
+  DRAW
+  AWAY
+}
+
+enum BetStatus {
+  PENDING
+  WON
+  LOST
+}
+
+model Bet {
+  id       String    @id @default(uuid())
+  matchId  String
+  placedAt DateTime  @default(now())
+  pick     Pick
+  odd      Float
+  stake    Float
+  status   BetStatus @default(PENDING)
+  return   Float?
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
 }
