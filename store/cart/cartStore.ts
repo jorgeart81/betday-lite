@@ -33,8 +33,18 @@ const storeApi: StateCreator<State & Actions, [['zustand/devtools', never]]> = (
       (m) => m.match.id === cartMatch.match.id,
     );
     if (matchExists) return;
+
+    const odd =
+      cartMatch.match.market.odds[
+        cartMatch.pick.toLowerCase() as keyof typeof cartMatch.match.market.odds
+      ];
+
+    const result = cartMatch.stake
+      ? (odd * 1000 * (cartMatch.stake * 1000)) / 1000 ** 2
+      : 0;
+
     set((prev) => ({
-      cartMatches: [...prev.cartMatches, { ...cartMatch }],
+      cartMatches: [...prev.cartMatches, { ...cartMatch, result }],
     }));
   },
   removeMatch: (matchId: string) => {
