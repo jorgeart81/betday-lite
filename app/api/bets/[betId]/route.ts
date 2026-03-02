@@ -1,5 +1,5 @@
 import { auth } from '@/config/auth';
-import { DemoData } from '@/data/demo';
+import { BetDatasource } from '@/data/datasources/betDatasource';
 
 export async function GET(
   request: Request,
@@ -12,7 +12,7 @@ export async function GET(
   }
 
   const { betId } = await params;
-  const bet = DemoData.betsMe.bets.find((b) => b.id === betId);
+  const bet = await BetDatasource.findById(betId, session.user.id);
 
   if (!bet) {
     return Response.json({ message: 'Bet not found' }, { status: 404 });

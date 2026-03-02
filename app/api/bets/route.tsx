@@ -3,11 +3,14 @@ import { BetDatasource } from '@/data/datasources/betDatasource';
 
 export async function GET() {
   const session = await auth();
-  console.log({ session });
+
   if (!session) {
     return Response.json({ message: 'Unauthorized' }, { status: 401 });
   }
-  return Response.json(BetDatasource.findAllByUserId(session.user.id), {
+
+  const bets = await BetDatasource.findAllByUserId(session.user.id);
+
+  return Response.json(bets, {
     status: 200,
   });
 }

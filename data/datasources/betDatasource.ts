@@ -38,7 +38,7 @@ export class BetDatasource {
     return await prisma.bet.findMany({ where: { userId: id } });
   }
 
-  static async findById(id: string): Promise<Bet | null> {
-    return await prisma.bet.findUnique({ where: { id } });
+  static async findById(id: string, userId: string): Promise<Bet | null> {
+    return await prisma.bet.findUnique({ where: { id, userId } });
   }
 }
