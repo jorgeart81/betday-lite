@@ -45,16 +45,18 @@ export const Order = () => {
   const handlePlaceOrder = () => {
     startTransition(async () => {
       const result = await placeOrder(
-        cartMatches.map(
-          (cm): NewBetOptions => ({
-            matchId: cm.match.id,
-            pick: cm.pick,
-            odd: cm.match.market.odds[
-              cm.pick.toLowerCase() as keyof typeof cm.match.market.odds
-            ],
-            stake: 0,
-          }),
-        ),
+        cartMatches
+          .filter((cm) => cm.stake !== null)
+          .map(
+            (cm): NewBetOptions => ({
+              matchId: cm.match.id,
+              pick: cm.pick,
+              odd: cm.match.market.odds[
+                cm.pick.toLowerCase() as keyof typeof cm.match.market.odds
+              ],
+              stake: cm.stake!,
+            }),
+          ),
       );
 
       if (result.data) result.data.forEach((item) => removeMatch(item.matchId));

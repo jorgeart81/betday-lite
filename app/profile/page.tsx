@@ -1,11 +1,18 @@
+import { auth } from '@/config/auth';
+
 import { BetDatasource } from '@/data/datasources/betDatasource';
+import { env } from 'process';
+import { MatchesToday } from '../api/_types/matchesResponse';
 import { Head } from './_components/Head';
 import { Modal } from './_components/Modal';
-import { auth } from '@/config/auth';
+import { BetCard } from './place-order/_components/BetCard';
 
 export default async function LoginPage() {
   const session = await auth();
   const bets = await BetDatasource.findAllByUserId(session!.user.id);
+
+  const res = await fetch(`${env.NEXT_PUBLIC_API_URL}/matches`);
+  const matchesToday: MatchesToday = await res.json();
 
   return (
     <>
@@ -18,11 +25,27 @@ export default async function LoginPage() {
           </span>
         </div>
       ) : (
-        <>
-          {bets.map((bet) => (
-            <div key={bet.id}>{bet.matchId}</div>
-          ))}
-        </>
+        <div className='relative flex flex-wrap gap-3'>
+          {bets.map((bet) => {
+            const match = matchesToday.matches.find(
+              (m) => m.id === bet.matchId,
+            );
+
+            return (
+              <BetCard
+                key={bet.id}
+                id={bet.id}
+                awayTeam={match?.awayTeam.name ?? 'Unknown'}
+                homeTeam={match?.homeTeam.name ?? 'Unknown'}
+                pick={bet.pick}
+                placedAt={bet.placedAt}
+                revenue={bet.return}
+                stake={bet.stake}
+                status={bet.status}
+              />
+            );
+          })}
+        </div>
       )}
       <Modal />
     </>
