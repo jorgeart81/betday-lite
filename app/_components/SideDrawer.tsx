@@ -119,6 +119,27 @@ export const SideDrawer = ({ children }: Props) => {
               >
                 Limpiar todo <Trash size={16} onClick={() => {}} />
               </button>
+
+              <div className='inline-flex justify-between'>
+                <span>Apuesta Total </span>{' '}
+                <b>
+                  PEN{' '}
+                  {cartMatches
+                    .reduce((acc, current) => acc + (current.stake || 0), 0)
+                    .toFixed(2)}
+                </b>
+              </div>
+              <div className='inline-flex justify-between'>
+                <span>Ganancia Total </span>{' '}
+                <b>
+                  PEN{' '}
+                  {cartMatches
+                    .reduce((acc, current) => acc + (current.result || 0), 0)
+                    .toFixed(2)}
+                </b>
+              </div>
+
+              <button className='btn bg-green-500 text-white my-3 hover:bg-green-600'>Realizar apuesta</button>
             </>
           )}
         </div>
