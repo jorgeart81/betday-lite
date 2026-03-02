@@ -30,15 +30,17 @@ export default function RootLayout({
   return (
     <html lang='es' data-theme='emerald'>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased relative h-screen`}
       >
         <Provider>
-          <NavBar
-            appName={env.APP_NAME ?? 'Dashboard'}
-            className='h-16 fixed'
-          />
-          <div className='pt-16 h-[calc(100vh-4rem)]'>
-            <SideDrawer>{children}</SideDrawer>
+          <div className='grid grid-rows-[64_1fr] h-full'>
+            <NavBar
+              appName={env.APP_NAME ?? 'Dashboard'}
+              className='fixed h-[64] row-start-0'
+            />
+            <div className='overflow-auto row-start-2'>
+              <SideDrawer>{children}</SideDrawer>
+            </div>
           </div>
         </Provider>
       </body>

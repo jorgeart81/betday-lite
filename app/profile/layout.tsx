@@ -19,5 +19,5 @@ export default async function ProfileLayout({
     redirect('/login');
   }
 
-  return <>{children}</>;
+  return <div className='mx-auto h-full container'>{children}</div>;
 }

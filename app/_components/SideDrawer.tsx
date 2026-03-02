@@ -1,10 +1,14 @@
 'use client';
-import { ReactNode } from 'react';
+import { ReactNode, useRef } from 'react';
+
+import { useSession } from 'next-auth/react';
+import Link from 'next/link';
 
 import { ArrowRight, ShoppingBag, Trash, Trophy } from 'lucide-react';
 
 import { useCartStore } from '@/store/cart/cartStore';
 import { Pick } from '../api/_types/betsResponse';
+import { useRouter } from 'next/navigation';
 
 const PICK_LABEL: Record<Pick, string> = {
   AWAY: 'Visitante',
@@ -16,10 +20,17 @@ interface Props {
 }
 
 export const SideDrawer = ({ children }: Props) => {
+  const drawerToggleRef = useRef<HTMLInputElement>(null);
+
+  const router = useRouter();
+  const { data: session } = useSession();
+
   const cartMatches = useCartStore((state) => state.cartMatches);
   const removeMatch = useCartStore((state) => state.removeMatch);
   const changeStake = useCartStore((state) => state.changeStake);
   const resetStore = useCartStore((state) => state.reset);
+
+  const currency = 'PEN';
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -37,26 +48,50 @@ export const SideDrawer = ({ children }: Props) => {
     }
   };
 
+  const handlePlaceBet = () => {
+    const isAuthenticated = !!session?.user;
+    if (!isAuthenticated) {
+      router.push('/login');
+      return;
+    }
+  };
+
   return (
-    <div className='drawer drawer-end'>
-      <input id='my-drawer-1' type='checkbox' className='drawer-toggle' />
+    <div className='drawer drawer-end h-full'>
+      <input
+        ref={drawerToggleRef}
+        id='my-drawer-1'
+        type='checkbox'
+        className='drawer-toggle'
+      />
       <div className='drawer-content'>
         {/* Page content here */}
         {children}
       </div>
+
       <div className='drawer-side'>
         <label
           htmlFor='my-drawer-1'
           aria-label='close sidebar'
           className='drawer-overlay'
         ></label>
+        {/* Sidebar container */}
         <div className='relative flex flex-col bg-base-100 min-h-full w-80 p-4'>
+          {/* Sidebar content */}
           {cartMatches.length === 0 ? (
             <div className='w-full flex-1 flex justify-center items-center'>
-              <span className='inline-flex flex-col items-center gap-2 text-gray-500'>
+              <Link
+                href='/'
+                onClick={() => {
+                  if (drawerToggleRef.current) {
+                    drawerToggleRef.current.checked = false;
+                  }
+                }}
+                className='inline-flex flex-col items-center gap-2 text-gray-500'
+              >
                 <ShoppingBag size={36} />
                 Agrega apuestas a la bolsa
-              </span>
+              </Link>
             </div>
           ) : (
             <>
@@ -79,10 +114,13 @@ export const SideDrawer = ({ children }: Props) => {
                           <span>{cart.match.market.type}</span>)
                         </span>
                       </div>
-                      <button className='btn btn-square btn-ghost'>
+                      <button
+                        onClick={() => removeMatch(cart.match.id)}
+                        className='btn btn-square size-9 group'
+                      >
                         <Trash
                           size={16}
-                          onClick={() => removeMatch(cart.match.id)}
+                          className='text-gray group-hover:text-red-500 transition-colors'
                         />
                       </button>
                     </div>
@@ -106,7 +144,7 @@ export const SideDrawer = ({ children }: Props) => {
                         className='max-w-28 input input-sm appearance-none [&::-webkit-outer-spin-button]:hidden [&::-webkit-inner-spin-button]:hidden'
                       />
                       <span className='font-semibold'>
-                        Ganar:PEN {cart.result || '0.00'}
+                        Ganar:{currency} {cart.result || '0.00'}
                       </span>
                     </div>
                   </li>
@@ -123,7 +161,7 @@ export const SideDrawer = ({ children }: Props) => {
               <div className='inline-flex justify-between'>
                 <span>Apuesta Total </span>{' '}
                 <b>
-                  PEN{' '}
+                  {currency}{' '}
                   {cartMatches
                     .reduce((acc, current) => acc + (current.stake || 0), 0)
                     .toFixed(2)}
@@ -132,14 +170,19 @@ export const SideDrawer = ({ children }: Props) => {
               <div className='inline-flex justify-between'>
                 <span>Ganancia Total </span>{' '}
                 <b>
-                  PEN{' '}
+                  {currency}{' '}
                   {cartMatches
                     .reduce((acc, current) => acc + (current.result || 0), 0)
                     .toFixed(2)}
                 </b>
               </div>
 
-              <button className='btn bg-green-500 text-white my-3 hover:bg-green-600'>Realizar apuesta</button>
+              <button
+                onClick={handlePlaceBet}
+                className='btn bg-green-500 text-white my-3 hover:bg-green-600'
+              >
+                Realizar apuesta
+              </button>
             </>
           )}
         </div>

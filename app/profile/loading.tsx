@@ -1,5 +1,5 @@
 import React from 'react';
 
 export default function Loading() {
-  return <span className='loading loading-ring loading-xl'></span>;
+  return <span className='loading loading-ring loading-xl'></span>
 }
