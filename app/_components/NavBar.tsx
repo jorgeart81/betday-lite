@@ -5,6 +5,8 @@ import { ComponentProps } from 'react';
 
 import { LogOut } from 'lucide-react';
 import { usePathname } from 'next/navigation';
+import { BagIndicator } from './BagIndicator';
+import { OpenDrawer } from './OpenDrawer';
 
 interface Props extends ComponentProps<'nav'> {
   appName: string;
@@ -18,7 +20,7 @@ export const NavBar = ({ appName, className, ...props }: Props) => {
   const isAuthenticated = !!session?.user;
 
   return (
-    <nav className={`navbar bg-base-100 shadow-sm ${className}`} {...props}>
+    <nav className={`navbar bg-base-100 z-10 shadow-sm ${className}`} {...props}>
       <div className='flex-1'>
         <Link href='/' className='btn btn-ghost text-xl'>
           {appName}
@@ -26,6 +28,9 @@ export const NavBar = ({ appName, className, ...props }: Props) => {
       </div>
 
       <div className='flex gap-2 items-center'>
+        <OpenDrawer>
+          <BagIndicator />
+        </OpenDrawer>
         {!isAuthenticated && (
           <>
             <Link

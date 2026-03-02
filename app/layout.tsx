@@ -32,8 +32,8 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <Provider>
-          <NavBar appName={env.APP_NAME ?? 'Dashboard'} className='h-16' />
-          <div className='h-[calc(100vh-4rem)]'>{children}</div>
+          <NavBar appName={env.APP_NAME ?? 'Dashboard'} className='h-16 fixed' />
+          <div className='pt-16 h-[calc(100vh-4rem)]'>{children}</div>
         </Provider>
       </body>
     </html>
