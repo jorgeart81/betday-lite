@@ -48,12 +48,13 @@ export const SideDrawer = ({ children }: Props) => {
     }
   };
 
-  const handlePlaceBet = () => {
+  const handlePlaceBet = async () => {
     const isAuthenticated = !!session?.user;
     if (!isAuthenticated) {
       router.push('/login');
       return;
     }
+    router.push('/profile/place-order');
   };
 
   return (

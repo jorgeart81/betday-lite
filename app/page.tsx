@@ -1,8 +1,8 @@
+import { Clock } from 'lucide-react';
+
 import { env } from '@/config/env';
 import { MatchCard } from './_components/MatchCard';
 import { Match, MatchesToday } from './api/_types/matchesResponse';
-import { Clock } from 'lucide-react';
-import { SideDrawer } from './_components/SideDrawer';
 
 export default async function Home() {
   const res = await fetch(`${env.NEXT_PUBLIC_API_URL}/matches`);
