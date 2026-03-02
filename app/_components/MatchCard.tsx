@@ -1,12 +1,20 @@
 'use client';
 import { Clock } from 'lucide-react';
 
+import clsx from 'clsx';
+
 import { useCartStore } from '@/store/cart/cartStore';
 import { Match } from '../api/_types/matchesResponse';
 
-export const MatchCard = (match: Match) => {
+interface Props {
+  match: Match;
+}
+
+export const MatchCard = ({ match }: Props) => {
   const { league, startTime, homeTeam, awayTeam, market } = match;
+  const cartMatches = useCartStore((state) => state.cartMatches);
   const addMatch = useCartStore((state) => state.addMatch);
+  const cartMatch = cartMatches.find((cart) => cart.match.id === match.id);
 
   const date = new Date(startTime);
   const formatted = date.toLocaleTimeString('es-ES', {
@@ -47,22 +55,31 @@ export const MatchCard = (match: Match) => {
         </div>
         <div className='w-full flex flex-col md:flex-row gap-2'>
           <button
-            onClick={() => addMatch({ match: match, pick: 'HOME' })}
-            className='flex-1 flex flex-col btn hover:bg-green-500 hover:text-white p-2 lg:p-8'
+            onClick={() => addMatch({ match: match, pick: 'HOME', stake: 10 })}
+            className={clsx(
+              'flex-1 flex flex-col btn hover:bg-green-500 hover:text-white p-2 lg:p-8',
+              { 'bg-green-500 text-white': cartMatch?.pick === 'HOME' },
+            )}
           >
             <span>Home (1)</span>{' '}
             <span className='text-lg'>{market.odds.home}</span>
           </button>
           <button
-            onClick={() => addMatch({ match: match, pick: 'DRAW' })}
-            className='flex-1 flex flex-col btn hover:bg-green-500 hover:text-white p-2 lg:p-8'
+            onClick={() => addMatch({ match: match, pick: 'DRAW', stake: 10 })}
+            className={clsx(
+              'flex-1 flex flex-col btn hover:bg-green-500 hover:text-white p-2 lg:p-8',
+              { 'bg-green-500 text-white': cartMatch?.pick === 'DRAW' },
+            )}
           >
             <span>Draw (X)</span>{' '}
             <span className='text-lg'>{market.odds.draw}</span>
           </button>
           <button
-            onClick={() => addMatch({ match: match, pick: 'AWAY' })}
-            className='flex-1 flex flex-col btn hover:bg-green-500 hover:text-white p-2 lg:p-8'
+            onClick={() => addMatch({ match: match, pick: 'AWAY', stake: 10 })}
+            className={clsx(
+              'flex-1 flex flex-col btn hover:bg-green-500 hover:text-white p-2 lg:p-8',
+              { 'bg-green-500 text-white': cartMatch?.pick === 'AWAY' },
+            )}
           >
             <span>Away (2)</span>{' '}
             <span className='text-lg'>{market.odds.away}</span>

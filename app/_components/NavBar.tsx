@@ -20,7 +20,10 @@ export const NavBar = ({ appName, className, ...props }: Props) => {
   const isAuthenticated = !!session?.user;
 
   return (
-    <nav className={`navbar bg-base-100 z-10 shadow-sm ${className}`} {...props}>
+    <nav
+      className={`navbar bg-base-100 z-10 shadow-sm ${className}`}
+      {...props}
+    >
       <div className='flex-1'>
         <Link href='/' className='btn btn-ghost text-xl'>
           {appName}
@@ -63,7 +66,7 @@ export const NavBar = ({ appName, className, ...props }: Props) => {
               }}
               className='btn btn-sm flex items-center gap-2 hover:bg-accent'
             >
-              <LogOut size={18} /> Logout
+              <LogOut size={18} /> <span className='hidden md:block'>Logout</span>
             </button>
           </>
         )}

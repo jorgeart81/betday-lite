@@ -5,6 +5,7 @@ import './globals.css';
 import { env } from '@/config/env';
 import { NavBar } from './_components/NavBar';
 import { Provider } from './_components/provider/Provider';
+import { SideDrawer } from './_components/SideDrawer';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -32,8 +33,13 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <Provider>
-          <NavBar appName={env.APP_NAME ?? 'Dashboard'} className='h-16 fixed' />
-          <div className='pt-16 h-[calc(100vh-4rem)]'>{children}</div>
+          <NavBar
+            appName={env.APP_NAME ?? 'Dashboard'}
+            className='h-16 fixed'
+          />
+          <div className='pt-16 h-[calc(100vh-4rem)]'>
+            <SideDrawer>{children}</SideDrawer>
+          </div>
         </Provider>
       </body>
     </html>

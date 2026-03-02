@@ -3,7 +3,7 @@ import { useCartStore } from '@/store/cart/cartStore';
 import { ShoppingBag } from 'lucide-react';
 
 export const BagIndicator = () => {
-  const cartMatches = useCartStore((state) => state.matches);
+  const cartMatches = useCartStore((state) => state.cartMatches);
 
   return (
     <div className='indicator cursor-pointer'>
