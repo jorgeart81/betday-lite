@@ -11,9 +11,8 @@ export default async function ProfilePage() {
   const session = await auth();
   const bets = await BetDatasource.findAllByUserId(session!.user.id);
 
-  // const res = await fetch(`${env.NEXT_PUBLIC_API_URL}/matches`);
-  // const matchesToday: MatchesToday = await res.json();
-  const matchesToday: MatchesToday = { timezone: '', date: '', matches: [] };
+  const res = await fetch(`${env.NEXT_PUBLIC_API_URL}/matches`);
+  const matchesToday: MatchesToday = await res.json();
 
   return (
     <>
