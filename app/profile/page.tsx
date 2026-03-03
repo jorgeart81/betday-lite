@@ -7,12 +7,13 @@ import { Head } from './_components/Head';
 import { Modal } from './_components/Modal';
 import { BetCard } from './place-order/_components/BetCard';
 
-export default async function LoginPage() {
+export default async function ProfilePage() {
   const session = await auth();
   const bets = await BetDatasource.findAllByUserId(session!.user.id);
 
-  const res = await fetch(`${env.NEXT_PUBLIC_API_URL}/matches`);
-  const matchesToday: MatchesToday = await res.json();
+  // const res = await fetch(`${env.NEXT_PUBLIC_API_URL}/matches`);
+  // const matchesToday: MatchesToday = await res.json();
+  const matchesToday: MatchesToday = { timezone: '', date: '', matches: [] };
 
   return (
     <>
