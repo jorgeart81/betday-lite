@@ -7,7 +7,7 @@
     "build": "prisma migrate deploy && next build",
     "start": "next start",
     "lint": "eslint",
-    "prisma:deploy": "prisma migrate deploy",
+    "prisma:deploy": "npx prisma generate && prisma migrate deploy",
     "seed": "prisma db seed"
   },
   "dependencies": {
