@@ -1,8 +1,8 @@
 import { Clock } from 'lucide-react';
 
-import { env } from 'process';
 import { MatchCard } from './_components/MatchCard';
 import { Match, MatchesToday } from './api/_types/matchesResponse';
+import { env } from '@/config/env';
 
 export default async function Home() {
   const res = await fetch(`${env.NEXT_PUBLIC_API_URL}/matches`);
@@ -10,21 +10,22 @@ export default async function Home() {
   const data: MatchesToday = await res.json();
   const date = new Date(data.date);
 
-  const formatter = new Intl.DateTimeFormat('es-PE', {
-    timeZone: 'America/Lima',
-    day: 'numeric',
-    hour: 'numeric',
-    hour12: false,
-  });
-
   const formatted = date.toLocaleDateString('es-PE');
   const matchesMap = data.matches.reduce(
     (acc, current) => {
-      const date = new Date(current.startTime);
+      const startTime = new Date(current.startTime);
+      const formatted = startTime.toLocaleString('es-ES', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false,
+      });
 
-      const parts = formatter.formatToParts(date);
-      const day = Number(parts.find((p) => p.type === 'day')?.value);
-      const hour = Number(parts.find((p) => p.type === 'hour')?.value);
+      const [date, time] = formatted.split(',');
+      const day = Number(date.split('/')[0]);
+      const hour = Number(time.split(':')[0]);
 
       acc[day] ??= {};
       acc[day][hour] ??= [];

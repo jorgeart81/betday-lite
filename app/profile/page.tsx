@@ -5,7 +5,8 @@ import { MatchesToday } from '../api/_types/matchesResponse';
 import { Head } from './_components/Head';
 import { Modal } from './_components/Modal';
 import { BetCard } from './place-order/_components/BetCard';
-import { env } from 'process';
+import { env } from '@/config/env';
+
 
 export default async function ProfilePage() {
   const session = await auth();
