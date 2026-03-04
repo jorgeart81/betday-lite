@@ -1,13 +1,11 @@
 import { Clock } from 'lucide-react';
 
-import { getBaseUrl } from '@/utils/getBaseUrl';
+import { env } from 'process';
 import { MatchCard } from './_components/MatchCard';
 import { Match, MatchesToday } from './api/_types/matchesResponse';
 
 export default async function Home() {
-  const baseUrl = await getBaseUrl();
-
-  const res = await fetch(`${baseUrl}/api/matches`);
+  const res = await fetch(`${env.NEXT_PUBLIC_API_URL}/matches`);
 
   const data: MatchesToday = await res.json();
   const date = new Date(data.date);
