@@ -1,7 +1,7 @@
 import { auth } from '@/config/auth';
 
 import { BetDatasource } from '@/data/datasources/betDatasource';
-import { env } from 'process';
+import { getBaseUrl } from '@/utils/getBaseUrl';
 import { MatchesToday } from '../api/_types/matchesResponse';
 import { Head } from './_components/Head';
 import { Modal } from './_components/Modal';
@@ -10,8 +10,9 @@ import { BetCard } from './place-order/_components/BetCard';
 export default async function LoginPage() {
   const session = await auth();
   const bets = await BetDatasource.findAllByUserId(session!.user.id);
+  const baseUrl = await getBaseUrl();
 
-  const res = await fetch(`${env.NEXT_PUBLIC_API_URL}/matches`);
+  const res = await fetch(`${baseUrl}/api/matches`);
   const matchesToday: MatchesToday = await res.json();
 
   return (

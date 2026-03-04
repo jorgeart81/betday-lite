@@ -1,21 +1,32 @@
 import { Clock } from 'lucide-react';
 
-import { env } from '@/config/env';
+import { getBaseUrl } from '@/utils/getBaseUrl';
 import { MatchCard } from './_components/MatchCard';
 import { Match, MatchesToday } from './api/_types/matchesResponse';
 
 export default async function Home() {
-  const res = await fetch(`${env.NEXT_PUBLIC_API_URL}/matches`);
+  const baseUrl = await getBaseUrl();
+
+  const res = await fetch(`${baseUrl}/api/matches`);
 
   const data: MatchesToday = await res.json();
   const date = new Date(data.date);
 
-  const formatted = date.toLocaleDateString('es-ES');
+  const formatter = new Intl.DateTimeFormat('es-PE', {
+    timeZone: 'America/Lima',
+    day: 'numeric',
+    hour: 'numeric',
+    hour12: false,
+  });
+
+  const formatted = date.toLocaleDateString('es-PE');
   const matchesMap = data.matches.reduce(
     (acc, current) => {
       const date = new Date(current.startTime);
-      const day = date.getDate();
-      const hour = date.getHours();
+
+      const parts = formatter.formatToParts(date);
+      const day = Number(parts.find((p) => p.type === 'day')?.value);
+      const hour = Number(parts.find((p) => p.type === 'hour')?.value);
 
       acc[day] ??= {};
       acc[day][hour] ??= [];
