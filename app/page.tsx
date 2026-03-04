@@ -14,22 +14,24 @@ export default async function Home() {
   const matchesMap = data.matches.reduce(
     (acc, current) => {
       const startTime = new Date(current.startTime);
-      const formatted = startTime.toLocaleString('es-ES', {
-        day: '2-digit',
-        month: '2-digit',
-        year: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit',
+
+      const hour = new Intl.DateTimeFormat('es-PE', {
+        timeZone: 'America/Lima',
+        hour: 'numeric',
         hour12: false,
-      });
+      }).format(startTime);
 
-      const [date, time] = formatted.split(',');
-      const day = Number(date.split('/')[0]);
-      const hour = Number(time.split(':')[0]);
+      const day = new Intl.DateTimeFormat('es-PE', {
+        timeZone: 'America/Lima',
+        day: 'numeric',
+      }).format(startTime);
 
-      acc[day] ??= {};
-      acc[day][hour] ??= [];
-      acc[day][hour].push(current);
+      const dayNum = Number(day);
+      const hourNum = Number(hour);
+
+      acc[dayNum] ??= {};
+      acc[dayNum][hourNum] ??= [];
+      acc[dayNum][hourNum].push(current);
 
       return acc;
     },
